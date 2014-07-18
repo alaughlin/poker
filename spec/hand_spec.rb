@@ -64,5 +64,6 @@ describe "Hand" do
                                     Card.new(:h, 11)] )
       expect(weak_hand.hand_strength).to eq(0)
     end
+
   end
 end

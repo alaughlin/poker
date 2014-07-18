@@ -11,8 +11,8 @@ describe "Deck" do
     expect(deck.uniq).to eq(deck)
   end
 
-  it "gives cards to players"
+  it "gives cards to hands"
 
-  it "accepts cards from player"
+  it "accepts cards from hands"
 
 end

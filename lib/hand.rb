@@ -1,16 +1,21 @@
 require_relative 'deck'
 
 class Hand < Array
-  attr_accessor :contents
+
   def initialize(deck)
+    @deck = deck
+
     super([])
 
-   # @contents = []
     5.times do
       self << deck.pop
     end
+
   end
 
-
+  def return_cards(returned card indices)
+    #give certain cards
+    #take same number from @deck
+  end
 
 end

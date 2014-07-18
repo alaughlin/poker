@@ -19,7 +19,7 @@ class Hand < Array
 
   end
 
-  def exchange_cards(*indices)
+  def exchange_cards(indices)
     return_cards(indices)
     take_cards(indices.length)
   end

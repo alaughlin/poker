@@ -1,12 +1,12 @@
 require 'hand'
 
 describe "Hand" do
-  subject(:hand) { Hand.new }
+  let(:deck) { [1,2,3,4,5] }
+  subject(:hand) { Hand.new(deck) }
 
   it "should contain five cards" do
     expect(hand.length).to eq(5)
   end
-
 
   it "identify hand value"
 

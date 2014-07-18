@@ -12,7 +12,6 @@ class Poker
 
   def play
     until over?
-
       @current_players = @players.dup
 
       @deck = Deck.new.shuffle
@@ -41,9 +40,7 @@ class Poker
       end
 
       distribute_pot(compare_hands(@current_players))
-
     end
-
   end
 
   def over?

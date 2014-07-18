@@ -1,12 +1,10 @@
 require_relative 'deck'
 
 class Hand < Array
-
   def initialize(deck, cards = false)
     @deck = deck
 
     super([])
-
 
     unless cards
       5.times do
@@ -15,8 +13,6 @@ class Hand < Array
     else
       self.concat(cards)
     end
-
-
   end
 
   def exchange_cards(indices)
@@ -99,7 +95,6 @@ class Hand < Array
   end
 
   def is_straight?
-
     high_ace = self.map { |card| card.value }.sort
 
     low_ace = self.map do |card|
@@ -144,5 +139,4 @@ class Hand < Array
   def is_one_pair?
     self.map { |card| card.value }.uniq == 4
   end
-
 end

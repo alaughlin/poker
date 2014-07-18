@@ -10,6 +10,5 @@ class Player
   def inspect
     p @name
   end
-
 end
 

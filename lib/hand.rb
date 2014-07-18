@@ -39,14 +39,14 @@ class Hand < Array
       3
     elsif is_two_pair?
       2
-    elsif one_pair?
+    elsif is_one_pair?
       1
     else
       0
     end
   end
 
-  private
+  #private
 
   def return_cards(indices)
     indices.each do |idx|
@@ -85,7 +85,7 @@ class Hand < Array
       counts[card.value] += 1
     end
 
-    counts.values.include?(2) && counts.values.include(3)
+    counts.values.include?(2) && counts.values.include?(3)
   end
 
   def is_flush?
@@ -99,10 +99,21 @@ class Hand < Array
   end
 
   def is_straight?
-    self.sort_by!{ |card| card.value }
-    values_arr = self.map { |card| card.value }
 
-    (self.last.value - self.first.value) == 4 && values_arr.uniq.length == 5
+    high_ace = self.map { |card| card.value }.sort
+
+    low_ace = self.map do |card|
+      if card.value == 14
+        1
+      else
+        card.value
+      end
+    end.sort
+
+    high_check = (high_ace.last - high_ace.first) == 4 && high_ace.uniq.length == 5
+    low_check = (low_ace.last - low_ace.first) == 4 && low_ace.uniq.length == 5
+
+    high_check || low_check
   end
 
   def is_three_of_a_kind?
@@ -130,7 +141,7 @@ class Hand < Array
     value_counts[2] == 2
   end
 
-  def is_pair?
+  def is_one_pair?
     self.map { |card| card.value }.uniq == 4
   end
 

@@ -18,31 +18,51 @@ describe "Hand" do
     end
   end
 
-  context "working with hand stength"
-    it "should accurately identify hand strength" do
+  context "working with hand stength" do
 
+    it "accurately identifies hand strength" do
+      two_pair = Hand.new(:deck, [Card.new(:s, 2),
+                                  Card.new(:h, 2),
+                                  Card.new(:s, 3),
+                                  Card.new(:h, 3),
+                                  Card.new(:s, 6)] )
+      expect(two_pair.hand_strength).to eq(2)
     end
 
-    it "should find a straight flush" do
+    it "handles aces in straights" do
+      ace_straight = Hand.new(:deck, [Card.new(:s, 2),
+                                      Card.new(:h, 3),
+                                      Card.new(:s, 4),
+                                      Card.new(:h, 5),
+                                      Card.new(:s, 14)] )
+      expect(ace_straight.hand_strength).to eq(4)
+    end
+
+    it "should prioritize stronger hands I" do
       straight_flush = Hand.new(:deck, [Card.new(:s, 2),
                                         Card.new(:s, 3),
                                         Card.new(:s, 4),
                                         Card.new(:s, 5),
                                         Card.new(:s, 6)] )
-
-
-      expect(straight_flush.is_straight_flush?).to eq(true)
+      expect(straight_flush.hand_strength).to eq(8)
     end
 
-    it "doesn't falsely identify a straight flush" do
-      straight_flush = Hand.new(:deck, [Card.new(:s, 2),
-                                        Card.new(:s, 3),
-                                        Card.new(:s, 4),
-                                        Card.new(:s, 5),
-                                        Card.new(:s, 7)] )
-
-
-      expect(straight_flush.is_straight_flush?).to eq(false)
-
+    it "should prioritize stronger hands II" do
+      full_house = Hand.new(:deck, [Card.new(:s, 2),
+                                    Card.new(:h, 2),
+                                    Card.new(:d, 2),
+                                    Card.new(:s, 3),
+                                    Card.new(:h, 3)] )
+      expect(full_house.hand_strength).to eq(6)
     end
+
+    it "should return 0 for hand without value" do
+      weak_hand = Hand.new(:deck, [Card.new(:s, 2),
+                                    Card.new(:h, 3),
+                                    Card.new(:d, 6),
+                                    Card.new(:s, 9),
+                                    Card.new(:h, 11)] )
+      expect(weak_hand.hand_strength).to eq(0)
+    end
+  end
 end

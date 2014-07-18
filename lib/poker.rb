@@ -1,34 +1,46 @@
-require_relative 'player'
 require_relative 'hand'
+require_relative 'player'
 
 class Poker
   def initialize(*players)
-    players.each do |player|
+    @players = players
+
+    @players.each do |player|
       player.game = self
     end
-  end
-
-
   end
 
   def play
     until over?
 
-      current_players = players
+      @current_players = @players.dup
 
-      deck = Deck.new.shuffle
+      @deck = Deck.new.shuffle
 
-      pot = 0
+      @pot = 0
 
-      deal_hands
+      puts "starting new hand"
 
-      get_bets
+      deal_hands(@current_players)
+      puts "Betting, phase 1"
+      get_bets(@current_players)
 
-      change_cards
+      if @current_players.length == 1
+        p "number of global players: #{@players}"
+        distribute_pot(compare_hands(@current_players))
+        next
+      end
 
-      get_bets
+      change_cards(@current_players)
+      puts "Betting, phase 2"
+      get_bets(@current_players)
 
-      distribute_pot(compare_hands)
+      if @current_players.length == 1
+        distribute_pot(compare_hands(@current_players))
+        next
+      end
+
+      distribute_pot(compare_hands(@current_players))
 
     end
 
@@ -37,14 +49,14 @@ class Poker
   def over?
     i = 0
 
-    players.each do |player|
+    @players.each do |player|
       i += 1 if player.bankroll > 0
     end
 
     i == 1
   end
 
-  def deal_hands
+  def deal_hands(players)
     players.each do |player|
       player.hand = Hand.new(@deck)
     end
@@ -52,9 +64,10 @@ class Poker
 
   def get_bets(players)
     players.each do |player|
-      player.hand.inspect
+      p player.hand
 
-      puts "Pot: #{pot}"
+      puts "Pot: #{@pot}"
+      puts "Name: #{player.name}, Money: #{player.bankroll}"
       print "Do you want to bet or fold: "
       input = gets.chomp.downcase
 
@@ -63,10 +76,10 @@ class Poker
         print "How much would you like to bet: "
         bet = gets.chomp.to_i
         player.bankroll -= bet
-        pot += bet
+        @pot += bet
       when "fold"
         puts "Ok, you're out of this round!"
-        current_players.delete(player)
+        @current_players -= [player]
       end
     end
   end
@@ -75,7 +88,7 @@ class Poker
     players.each do |player|
       player.hand.inspect
 
-      print "Which cards do you want to discard?"
+      print "Which cards do you want to discard, #{player.name}: "
       cards = gets.chomp.split(",").map(&:to_i)
       player.hand.exchange_cards(cards) unless cards.empty?
     end
@@ -96,9 +109,13 @@ class Poker
 
   def distribute_pot(players)
     players.each do |player|
-      player.bankroll += (pot / players.length)
+      player.bankroll += (@pot / players.length)
     end
   end
 
 end
 
+adam = Player.new("adam")
+aaron = Player.new('aaron')
+our_game = Poker.new(adam, aaron)
+our_game.play

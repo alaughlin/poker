@@ -10,11 +10,11 @@ describe "Hand" do
 
   context "exchanges card with deck" do
     it "hand is different after exchange" do
-      expect(hand.exchange_cards(3,4)).to_not eq([6,7,8,9,10])
+      expect(hand.exchange_cards([3,4])).to_not eq([6,7,8,9,10])
     end
 
     it "deck is different after exchange" do
-      expect(hand.exchange_cards(3,4)).to_not eq([1,2,3,4,5])
+      expect(hand.exchange_cards([3,4])).to_not eq([1,2,3,4,5])
     end
   end
 
